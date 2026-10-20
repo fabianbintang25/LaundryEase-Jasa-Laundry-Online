@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard — LaundryEase</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="dash">
+
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="brand">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3c2 3 4 6 4 9a4 4 0 1 1-8 0c0-3 2-6 4-9Z" fill="#1F5F63"/></svg></span>
+      LaundryEase
+    </a>
+    <nav class="side-nav">
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="#pesanan-panel">Pesanan Saya</a>
+      <a href="#" onclick="return false;">Riwayat Transaksi</a>
+      <a href="#alat-panel">Sewa Peralatan</a>
+      <a href="#" onclick="return false;">Profil Saya</a>
+      <hr>
+      <a href="login.html">Keluar</a>
+    </nav>
+  </aside>
+
+  <div class="dash-main">
+    <header class="topbar">
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      <h1>Dashboard</h1>
+      <input class="search" type="text" placeholder="Cari pesanan...">
+      <div class="user">
+        <div class="avatar"></div>
+        <div class="user-name"><strong>Dinda R.</strong><span>Pelanggan</span></div>
+      </div>
+    </header>
+
+    <main class="dash-content">
+      <section class="stat-grid">
+        <div class="stat-card">
+          <div class="label">Pesanan Aktif</div>
+          <div class="value" id="statAktif">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Selesai Bulan Ini</div>
+          <div class="value" id="statSelesai">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Total Pengeluaran</div>
+          <div class="value">Rp450rb</div>
+        </div>
+        <div class="stat-card accent">
+          <div class="label">Alat Disewa</div>
+          <div class="value" id="statAlat">0</div>
+        </div>
+      </section>
+
+      <!-- ===== Data 1: Pesanan (CRUD) ===== -->
+      <section class="panel" id="pesanan-panel">
+        <div class="panel-head">
+          <h2>Data Pesanan</h2>
+          <button class="btn btn-primary btn-sm" id="btnAddPesanan">+ Tambah Pesanan</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr><th>Layanan</th><th>Tanggal</th><th>Status</th><th>Aksi</th></tr>
+            </thead>
+            <tbody id="pesananTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== Data 2: Peralatan Sewa (CRUD) ===== -->
+      <section class="panel" id="alat-panel">
+        <div class="panel-head">
+          <h2>Data Peralatan Sewa</h2>
+          <button class="btn btn-primary btn-sm" id="btnAddAlat">+ Tambah Alat</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr><th>Nama Alat</th><th>Stok</th><th>Harga / Hari</th><th>Status</th><th>Aksi</th></tr>
+            </thead>
+            <tbody id="alatTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- Modal: Pesanan -->
+<div class="modal-backdrop" id="pesananModal">
+  <div class="modal">
+    <h3 id="pesananModalTitle">Tambah Pesanan</h3>
+    <form id="pesananForm">
+      <input type="hidden" id="pesananId">
+      <div class="field">
+        <label for="pesananLayanan">Layanan</label>
+        <select id="pesananLayanan" required>
+          <option value="Cuci Kiloan">Cuci Kiloan</option>
+          <option value="Cuci Sepatu">Cuci Sepatu</option>
+          <option value="Dry Cleaning">Dry Cleaning</option>
+          <option value="Sewa Peralatan">Sewa Peralatan</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="pesananTanggal">Tanggal</label>
+        <input type="date" id="pesananTanggal" required>
+      </div>
+      <div class="field">
+        <label for="pesananStatus">Status</label>
+        <select id="pesananStatus" required>
+          <option value="proses">Diproses</option>
+          <option value="tunggu">Menunggu Konfirmasi</option>
+          <option value="selesai">Selesai</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" data-close="pesananModal">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Peralatan -->
+<div class="modal-backdrop" id="alatModal">
+  <div class="modal">
+    <h3 id="alatModalTitle">Tambah Alat</h3>
+    <form id="alatForm">
+      <input type="hidden" id="alatId">
+      <div class="field">
+        <label for="alatNama">Nama Alat</label>
+        <input type="text" id="alatNama" placeholder="Contoh: Vacuum Cleaner" required>
+      </div>
+      <div class="field">
+        <label for="alatStok">Stok</label>
+        <input type="number" id="alatStok" min="0" value="1" required>
+      </div>
+      <div class="field">
+        <label for="alatHarga">Harga Sewa / Hari (Rp)</label>
+        <input type="number" id="alatHarga" min="0" step="1000" placeholder="25000" required>
+      </div>
+      <div class="field">
+        <label for="alatStatus">Status</label>
+        <select id="alatStatus" required>
+          <option value="tersedia">Tersedia</option>
+          <option value="disewa">Disewa</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" data-close="alatModal">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
