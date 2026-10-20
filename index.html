@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LaundryEase — Laundry Bersih, Tanpa Ribet</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3c2 3 4 6 4 9a4 4 0 1 1-8 0c0-3 2-6 4-9Z" fill="#EAF5F4"/></svg>
+      </span>
+      LaundryEase
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html" class="active">Beranda</a>
+      <a href="#layanan">Layanan</a>
+      <a href="#cara-kerja">Tentang Kami</a>
+      <a href="#harga">Harga</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="login.html" class="link">Masuk</a>
+      <a href="register.html" class="btn btn-accent btn-sm">Daftar</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="container hero">
+  <div>
+    <p class="greeting" id="sapaan"></p>
+    <button type="button" class="btn-link" id="btnGantiNama">Bukan kamu? Ganti nama sapaan</button>
+    <p class="eyebrow">Layanan laundry dan sewa peralatan rumah tangga</p>
+    <h1>Laundry bersih,<br>tanpa ribet.</h1>
+    <p>Jemput-antar cucian, cuci sepatu, dry cleaning, sampai sewa alat rumah tangga — semua bisa dipesan lewat satu aplikasi.</p>
+    <div class="hero-actions">
+      <a href="register.html" class="btn btn-primary">Pesan Sekarang</a>
+      <a href="#layanan" class="btn btn-outline">Lihat Layanan</a>
+    </div>
+  </div>
+  <div class="hero-art">
+    <div class="card-float machine">
+      <div class="bar"></div>
+      <div class="ring"></div>
+    </div>
+    <div class="dot d1"></div>
+    <div class="dot d2"></div>
+    <div class="dot d3"></div>
+    <div class="card-float estimate">
+      <div class="big">3kg</div>
+      <small>Estimasi 6 jam</small>
+    </div>
+  </div>
+</section>
+
+<section class="section wash" id="layanan">
+  <div class="container">
+    <div class="section-head">
+      <h2>Layanan Kami</h2>
+      <p>Pilih layanan sesuai kebutuhan harianmu</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="#EAF5F4" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="12" cy="13" r="4"/></svg></div>
+        <h3>Cuci Kiloan</h3>
+        <p>Cuci, kering, setrika. Dijemput dan diantar ke rumahmu.</p>
+      </div>
+      <div class="card">
+        <div class="icon-box alt"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 16c0-3 3-4 5-4h6c2 0 5 1 5 4v2H4v-2Z"/></svg></div>
+        <h3>Cuci Sepatu</h3>
+        <p>Deep clean untuk sepatu favorit, kembali putih dan wangi.</p>
+      </div>
+      <div class="card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="#EAF5F4" stroke-width="2"><circle cx="12" cy="12" r="7"/><path d="M12 8v4l3 2"/></svg></div>
+        <h3>Sewa Peralatan</h3>
+        <p>Vacuum, setrika uap, dan alat rumah tangga harian lainnya.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cara-kerja">
+  <div class="container">
+    <div class="section-head"><h2>Cara Kerjanya</h2></div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><strong>Pilih Layanan</strong></div>
+      <div class="step"><div class="num">2</div><strong>Jadwalkan Jemput</strong></div>
+      <div class="step"><div class="num">3</div><strong>Terima &amp; Bayar</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="section wash" id="harga">
+  <div class="container">
+    <div class="section-head">
+      <h2>Daftar Harga</h2>
+      <p>Pilih layanan, lalu hitung perkiraan biayanya sebelum memesan</p>
+    </div>
+    <div class="grid-4" id="daftarHarga"></div>
+
+    <div class="card calc">
+      <h3>Hitung Estimasi Biaya</h3>
+      <div class="field">
+        <label for="calcNama">Nama</label>
+        <input type="text" id="calcNama" placeholder="Masukkan nama kamu">
+      </div>
+      <div class="field">
+        <label for="calcLayanan">Layanan</label>
+        <select id="calcLayanan"><option value="">Pilih layanan</option></select>
+      </div>
+      <div class="field">
+        <label for="calcJumlah" id="labelJumlah">Jumlah</label>
+        <input type="number" id="calcJumlah" min="1" placeholder="Pilih layanan dulu">
+        <small class="live-info" id="liveHarga"></small>
+      </div>
+      <div class="calc-actions">
+        <button type="button" class="btn btn-primary" id="btnHitung">Hitung Estimasi</button>
+        <button type="button" class="btn btn-outline" id="btnReset">Hapus</button>
+      </div>
+      <div class="calc-result" id="hasilHitung" hidden></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <span class="brand">LaundryEase</span>
+    <small>&copy; <span id="tahun">2026</span> LaundryEase. Semua hak cipta dilindungi.</small>
+  </div>
+</footer>
+
+<div class="toast-box" id="toastBox" aria-live="polite"></div>
+
+<script src="js/main.js"></script>
+<script src="js/landing.js"></script>
+</body>
+</html>
