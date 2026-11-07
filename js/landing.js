@@ -245,7 +245,7 @@ function estimasiCepat() {
 }
 
 // ===== Jalankan saat halaman dimuat =====
-tampilkanSapaan();
+tampilkanSapaan(document.getElementById('sapaan').dataset.nama);
 renderHarga();
 aktifkanMenu();
 document.getElementById('calcLayanan').addEventListener('change', perbaruiSatuan);

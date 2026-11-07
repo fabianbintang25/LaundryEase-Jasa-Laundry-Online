@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+// halaman ini hanya untuk pengguna yang sudah login
+if (!isset($_SESSION['nama'])) {
+    header('Location: login.php?pesan=harus-login');
+    exit;
+}
+
+$nama = $_SESSION['nama'];
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -10,18 +22,18 @@
 <div class="dash">
 
   <aside class="sidebar" id="sidebar">
-    <a href="index.html" class="brand">
+    <a href="index.php" class="brand">
       <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3c2 3 4 6 4 9a4 4 0 1 1-8 0c0-3 2-6 4-9Z" fill="#1F5F63"/></svg></span>
       LaundryEase
     </a>
     <nav class="side-nav">
-      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="dashboard.php" class="active">Dashboard</a>
       <a href="#pesanan-panel">Pesanan Saya</a>
       <a href="#" onclick="return false;">Riwayat Transaksi</a>
       <a href="#alat-panel">Sewa Peralatan</a>
       <a href="#" onclick="return false;">Profil Saya</a>
       <hr>
-      <a href="login.html">Keluar</a>
+      <a href="logout.php">Keluar</a>
     </nav>
   </aside>
 
@@ -32,7 +44,7 @@
       <input class="search" type="text" placeholder="Cari pesanan...">
       <div class="user">
         <div class="avatar"></div>
-        <div class="user-name"><strong>Dinda R.</strong><span>Pelanggan</span></div>
+        <div class="user-name"><strong><?= htmlspecialchars($nama) ?></strong><span>Pelanggan</span></div>
       </div>
     </header>
 

@@ -378,3 +378,8 @@ html{ scroll-padding-top:90px; }
 .harga-card{ transition:transform .2s ease, box-shadow .2s ease; }
 .harga-card.aktif{ transform:translateY(-4px); box-shadow:0 0 0 2px var(--teal), 0 10px 24px rgba(31,95,99,.15); }
 .live-info{ display:block; margin-top:6px; font-size:13px; font-weight:600; color:var(--teal); }
+
+/* ---------- PHP: Ingat saya (login.php) ---------- */
+.form-meta{ justify-content:space-between; align-items:center; }
+.remember{ display:flex; align-items:center; gap:6px; font-weight:500; color:var(--muted); }
+.remember input{ width:auto; margin:0; }

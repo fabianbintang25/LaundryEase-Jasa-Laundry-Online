@@ -1,3 +1,8 @@
+<?php
+session_start();
+$nama = $_SESSION['nama'] ?? null; // null jika belum login
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -10,35 +15,38 @@
 
 <header class="navbar">
   <div class="container">
-    <a href="index.html" class="brand">
+    <a href="index.php" class="brand">
       <span class="logo-mark">
         <svg viewBox="0 0 24 24" fill="none"><path d="M12 3c2 3 4 6 4 9a4 4 0 1 1-8 0c0-3 2-6 4-9Z" fill="#EAF5F4"/></svg>
       </span>
       LaundryEase
     </a>
     <nav class="nav-links" id="navLinks">
-      <a href="index.html" class="active">Beranda</a>
+      <a href="index.php" class="active">Beranda</a>
       <a href="#layanan">Layanan</a>
       <a href="#cara-kerja">Tentang Kami</a>
       <a href="#harga">Harga</a>
     </nav>
-    <div class="nav-actions">
-      <a href="login.html" class="link">Masuk</a>
-      <a href="register.html" class="btn btn-accent btn-sm">Daftar</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
-    </div>
+    <?php if ($nama): ?>
+  <span class="link">Halo, <?= htmlspecialchars($nama) ?></span>
+  <a href="dashboard.php" class="link">Dashboard</a>
+  <a href="logout.php" class="btn btn-accent btn-sm">Keluar</a>
+<?php else: ?>
+  <a href="login.php" class="link">Masuk</a>
+  <a href="register.php" class="btn btn-accent btn-sm">Daftar</a>
+<?php endif; ?>
   </div>
 </header>
 
 <section class="container hero">
   <div>
-    <p class="greeting" id="sapaan"></p>
-    <button type="button" class="btn-link" id="btnGantiNama">Bukan kamu? Ganti nama sapaan</button>
+    <p class="greeting" id="sapaan" data-nama="<?= htmlspecialchars($nama ?? '') ?>"></p>
+    <a href="<?= $nama ? 'dashboard.php' : 'register.php' ?>" class="btn btn-primary">Pesan Sekarang</a>
     <p class="eyebrow">Layanan laundry dan sewa peralatan rumah tangga</p>
     <h1>Laundry bersih,<br>tanpa ribet.</h1>
     <p>Jemput-antar cucian, cuci sepatu, dry cleaning, sampai sewa alat rumah tangga — semua bisa dipesan lewat satu aplikasi.</p>
     <div class="hero-actions">
-      <a href="register.html" class="btn btn-primary">Pesan Sekarang</a>
+      <a href="register.php" class="btn btn-primary">Pesan Sekarang</a>
       <a href="#layanan" class="btn btn-outline">Lihat Layanan</a>
     </div>
   </div>
