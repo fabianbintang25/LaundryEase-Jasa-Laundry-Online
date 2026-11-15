@@ -25,40 +25,12 @@ function formatTanggal(iso) {
 function formatRupiah(n) { return 'Rp' + Number(n).toLocaleString('id-ID'); }
 
 /* ---------- Seed data ---------- */
-let pesananData = loadData('le_pesanan', [
-  { id: uid(), layanan: 'Cuci Kiloan', tanggal: '2026-09-27', status: 'proses' },
-  { id: uid(), layanan: 'Sewa Peralatan', tanggal: '2026-09-28', status: 'tunggu' },
-  { id: uid(), layanan: 'Dry Cleaning', tanggal: '2026-09-25', status: 'selesai' },
-]);
 let alatData = loadData('le_alat', [
   { id: uid(), nama: 'Vacuum Cleaner', stok: 3, harga: 25000, status: 'tersedia' },
   { id: uid(), nama: 'Setrika Uap', stok: 2, harga: 15000, status: 'disewa' },
 ]);
 
 /* ---------- Render ---------- */
-function renderPesanan() {
-  const body = document.getElementById('pesananTableBody');
-  body.innerHTML = '';
-  if (pesananData.length === 0) {
-    body.innerHTML = '<tr class="empty-row"><td colspan="4">Belum ada data pesanan.</td></tr>';
-  } else {
-    pesananData.forEach(item => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${item.layanan}</td>
-        <td>${formatTanggal(item.tanggal)}</td>
-        <td><span class="badge ${STATUS_CLASS[item.status]}">${STATUS_LABEL[item.status]}</span></td>
-        <td class="row-actions">
-          <button data-edit="${item.id}">Edit</button>
-          <button data-del="${item.id}" class="del">Hapus</button>
-        </td>`;
-      body.appendChild(tr);
-    });
-  }
-  document.getElementById('statAktif').textContent = pesananData.filter(p => p.status !== 'selesai').length;
-  document.getElementById('statSelesai').textContent = pesananData.filter(p => p.status === 'selesai').length;
-}
-
 function renderAlat() {
   const body = document.getElementById('alatTableBody');
   body.innerHTML = '';
@@ -90,56 +62,6 @@ document.querySelectorAll('[data-close]').forEach(btn => {
 });
 document.querySelectorAll('.modal-backdrop').forEach(bg => {
   bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); });
-});
-
-/* ---------- Pesanan CRUD ---------- */
-const pesananForm = document.getElementById('pesananForm');
-
-document.getElementById('btnAddPesanan').addEventListener('click', () => {
-  pesananForm.reset();
-  document.getElementById('pesananId').value = '';
-  document.getElementById('pesananModalTitle').textContent = 'Tambah Pesanan';
-  openModal('pesananModal');
-});
-
-document.getElementById('pesananTableBody').addEventListener('click', e => {
-  const editId = e.target.dataset.edit;
-  const delId = e.target.dataset.del;
-  if (editId) {
-    const item = pesananData.find(p => p.id === editId);
-    if (!item) return;
-    document.getElementById('pesananId').value = item.id;
-    document.getElementById('pesananLayanan').value = item.layanan;
-    document.getElementById('pesananTanggal').value = item.tanggal;
-    document.getElementById('pesananStatus').value = item.status;
-    document.getElementById('pesananModalTitle').textContent = 'Edit Pesanan';
-    openModal('pesananModal');
-  }
-  if (delId) {
-    if (confirm('Hapus data pesanan ini?')) {
-      pesananData = pesananData.filter(p => p.id !== delId);
-      saveData('le_pesanan', pesananData);
-      renderPesanan();
-    }
-  }
-});
-
-pesananForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const id = document.getElementById('pesananId').value;
-  const payload = {
-    layanan: document.getElementById('pesananLayanan').value,
-    tanggal: document.getElementById('pesananTanggal').value,
-    status: document.getElementById('pesananStatus').value,
-  };
-  if (id) {
-    pesananData = pesananData.map(p => p.id === id ? { ...p, ...payload } : p);
-  } else {
-    pesananData.push({ id: uid(), ...payload });
-  }
-  saveData('le_pesanan', pesananData);
-  renderPesanan();
-  closeModal('pesananModal');
 });
 
 /* ---------- Alat CRUD ---------- */
@@ -195,5 +117,4 @@ alatForm.addEventListener('submit', e => {
 });
 
 /* ---------- Init ---------- */
-renderPesanan();
 renderAlat();

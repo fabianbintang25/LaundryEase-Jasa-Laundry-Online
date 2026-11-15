@@ -1,6 +1,5 @@
 <?php
 session_start();
-require 'includes/fungsi.php';
 
 // jika sudah login, langsung ke dashboard
 if (isset($_SESSION['nama'])) {
@@ -24,43 +23,15 @@ if (($_GET['pesan'] ?? '') === 'harus-login') {
     $notif = 'Silakan masuk terlebih dahulu.';
     $tipe = 'info';
 }
-
-// COOKIE: isi otomatis kolom email jika sebelumnya memilih "Ingat saya"
-$emailIsi = $_COOKIE['ingat_email'] ?? '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $sandi = $_POST['sandi'] ?? '';
-    $emailIsi = $email;
-
-    $pengguna = cariPengguna($email);
-
-    // password_verify() membandingkan sandi yang diketik dengan hash yang tersimpan
-    if ($pengguna !== null && password_verify($sandi, $pengguna['sandi'])) {
-        session_regenerate_id(true); // ganti ID session demi keamanan
-
-        // SESSION: data pengguna disimpan di server selama sesi berlangsung
-        $_SESSION['nama']  = $pengguna['nama'];
-        $_SESSION['email'] = $pengguna['email'];
-
-        // COOKIE: disimpan di browser selama 7 hari jika "Ingat saya" dicentang
-        $opsi = ['expires' => time() + 7 * 24 * 60 * 60, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax'];
-        if (isset($_POST['ingat'])) {
-            setcookie('ingat_email', $pengguna['email'], $opsi);
-        } else {
-            $opsi['expires'] = time() - 3600; // kedaluwarsa = cookie terhapus
-            setcookie('ingat_email', '', $opsi);
-        }
-
-        header('Location: dashboard.php');
-        exit;
-    }
-
+if (isset($_GET['error'])) {
     $notif = 'Email atau kata sandi salah!';
     $tipe = 'error';
 }
-?>
 
+// email dari login yang gagal, atau dari COOKIE bila memilih "Ingat saya"
+$emailIsi = $_SESSION['old_email'] ?? ($_COOKIE['ingat_email'] ?? '');
+unset($_SESSION['old_email']);
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -87,24 +58,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <h1>Masuk ke akun kamu</h1>
       <p class="subtitle">Kelola pesanan laundry dan sewa dalam satu tempat</p>
 
-     <form method="post" action="login.php">
-  <div class="field">
-    <label for="loginEmail">Email atau Username</label>
-    <input type="text" id="loginEmail" name="email" value="<?= htmlspecialchars($emailIsi) ?>" placeholder="nama@email.com" required>
-  </div>
-  <div class="field">
-    <label for="loginPassword">Kata Sandi</label>
-    <div class="input-wrap">
-      <input type="password" id="loginPassword" name="sandi" placeholder="••••••••" required>
-      <button type="button" class="toggle-pw" data-target="loginPassword">Lihat</button>
-    </div>
-  </div>
-  <div class="form-meta">
-    <label class="remember"><input type="checkbox" name="ingat" <?= $emailIsi !== '' ? 'checked' : '' ?>> Ingat saya</label>
-    <a href="#">Lupa kata sandi?</a>
-  </div>
-  <button type="submit" class="btn btn-primary btn-block">Masuk</button>
-</form>
+      <form action="login-proses.php" method="post">
+        <div class="field">
+          <label for="loginEmail">Email atau Username</label>
+          <input type="text" id="loginEmail" name="email" value="<?= htmlspecialchars($emailIsi) ?>" placeholder="nama@email.com" required>
+        </div>
+        <div class="field">
+          <label for="loginPassword">Kata Sandi</label>
+          <div class="input-wrap">
+            <input type="password" id="loginPassword" name="sandi" placeholder="••••••••" required>
+            <button type="button" class="toggle-pw" data-target="loginPassword">Lihat</button>
+          </div>
+        </div>
+        <div class="form-meta">
+          <label class="remember"><input type="checkbox" name="ingat" <?= $emailIsi !== '' ? 'checked' : '' ?>> Ingat saya</label>
+          <a href="#">Lupa kata sandi?</a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+      </form>
 
       <div class="auth-foot">
         Belum punya akun? <a href="register.php">Daftar di sini</a>
@@ -117,6 +88,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php if ($notif !== ''): ?>
 <script>showToast(<?= json_encode($notif) ?>, '<?= $tipe ?>', 4000);</script>
 <?php endif; ?>
-</script>
 </body>
 </html>
